@@ -5,8 +5,7 @@ https://www.youtube.com/watch?v=0UG2x2iWerk
 https://www.youtube.com/watch?v=bi0cKgmRuiA 
 
 
-**Following are the codes to create docker images , containerize them & generate end point urls
-Enable the Windows Subsystem for Linux (From Powershell Admin)
+## Following are the codes to create docker images , containerize them & generate end point urls Enable the Windows Subsystem for Linux (From Powershell Admin)
 
 -------------------------------------------------------------
 
