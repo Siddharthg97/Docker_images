@@ -11,6 +11,8 @@ There are 3 components to create containerized images -
 2) docker images - to create containerized images
 3) contanerized application
 
+Need to activate/enable virtualization before running docker images
+Activate wsl if we are running docker on windows system
 
    # import base image to get python distribution available. So we import base image from docker hub
    FROM python:3.8
