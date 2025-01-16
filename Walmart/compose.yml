@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  my_service:
+    image: sams-md-api-table:latest
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    environment:
+      - http_proxy=http://sysproxy.wal-mart.com:8080
+      - https_proxy=http://sysproxy.wal-mart.com:8080
+    volumes:
+      - ./src:/code/src
+      - ./test:/code/test
+      - ./prod_onlinefeaturestore_key.json:/code/prod_onlinefeaturestore_key.json
+      - ./markdown_non_prod_key.json:/code/markdown_non_prod_key.json
