@@ -72,7 +72,17 @@ def get_recommendations(data: Dict[str, ItemClubV3_jyotish]):
         "status": "SUCCESS",
         "data": sale_prediction
     }
-
+# {
+#   "additionalProp3": {
+#     "club_nbr": "6279",
+#     "product_id": "prod27341561",
+#     "customer_item_nbr": "980407953",
+#     "oos_date": "2024-07-30",
+#     "md_start_date": "2024-07-01",
+#     "current_inventory": 50,
+#     "current_retail_price": 12.8,
+#     "liquidation_price": 3
+#   }}
 
 # V3 API Endpoint
 @app.post("/json/v3")
