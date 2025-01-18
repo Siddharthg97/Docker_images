@@ -1,8 +1,4 @@
-
-
-
 https://www.youtube.com/watch?v=0UG2x2iWerk
-
 https://www.youtube.com/watch?v=bi0cKgmRuiA 
 
 There are 3 components to create containerized images - 
@@ -21,7 +17,7 @@ Activate wsl if we are running docker on windows system
 
 
 
-   # image creation
+# image creation
    docker build -t python-imdb
    docker  build --help
 
@@ -62,16 +58,15 @@ Image -> Container:
 
 When you create a container, Docker takes the specified image and launches it as a container.
 Example:
-bash
-Copy code
+
 docker run ubuntu
 Docker takes the ubuntu image and creates a container from it.
 Changes in the Container:
 
 Any modifications made inside the container (e.g., installing software or modifying files) are stored in the writable layer specific to that container.
 These changes do not affect the original image.
-Container Independence:
 
+Container Independence:
 Each container runs independently, even if created from the same image.
 Multiple containers can be created from a single image, each with its own writable layer and isolated environment.
 
