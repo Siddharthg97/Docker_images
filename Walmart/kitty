@@ -1,0 +1,129 @@
+owner:
+  group: sams-markdown-ds
+setup:
+  featureFlagMap:
+    useArtifactory: true
+    enableIstioSidecar: true
+    isGoldenSignalGateEnabled: true
+  releaseRefs: ['markdown_dev', 'main']
+
+build:
+  artifact: markdown-optimization
+  buildType: docker
+  docker:
+    app:
+      dockerFile: Dockerfile
+    buildArgs:
+      basePythonOSVersion: 3.8
+      SKIP_TESTS: "true"
+notify:
+  slack:
+    channelName: markdown_deployment
+gslb:
+  clusterProfiles:
+    dev:
+      cname: markdown-optimization.sams-markdown-ds.eus2-dev-a2.cluster.stg.walmart.com
+    stage:
+      cname: markdown-optimization.sams-markdown-ds.eus2-stage-a6.cluster.stg.walmart.com
+    prod:
+      cname: markdown-optimization.sams-markdown-ds.eus2-prod-a42.cluster.stg.walmart.com
+deploy:
+  skip: false
+  namespace: "sams-markdown-ds"
+  helm:
+    values:
+      env:
+        GOOGLE_APPLICATION_CREDENTIALS:
+      metadata:
+        labels:
+          wm.app: SAMS_MARKDOWN_DS_REGISTRY
+          wm.env: prod
+      global:
+        metrics:
+          enabled: true
+          goldenSignalsAggregation: true
+          remoteWriteSampleLimit: 10
+          whitelistenabled: true
+          endpoints:
+            - targetPort: 8000
+              path: "/metrics"
+          whitelist:
+            - exception_total:rate2m
+      min:
+        cpu: 100m
+        memory: 2048Mi
+      max:
+        cpu: 1000m
+        memory: 10240Mi
+      scaling:
+        min: 15
+        max: 20
+      networking:
+        internalPort: "5000"
+        externalPort: "5000"
+      readinessProbe:
+        enabled: "true"
+        probeInterval: 30
+        failureThreshold: 5
+        wait: 60
+      livenessProbe:
+        enabled: "true"
+        probeInterval: 30
+        failureThreshold: 5
+        wait: 60
+      secrets:
+        akeyless: true
+        config:
+          akeyless:
+            path: 
+        files:
+          - destination: prod-feature-store-api.json
+            content: markdown/prod_onlinefeaturestore_key
+          - destination: sql_database.txt
+            content: markdown/database
+          - destination: sql_username.txt
+            content: markdown/username
+          - destination: sql_server.txt
+            content: markdown/server
+          - destination: sql_password.txt
+            content: markdown/password
+          - destination: databricks_server_hostname.txt
+            content: markdown/databricks_server_hostname
+          - destination: databricks_token.txt
+            content: markdown/databricks_token
+          - destination: databricks_http_path.txt
+            content: markdown/databricks_http_path
+          - destination: account_url.txt
+            content: markdown/account_url
+          - destination: account_key.txt
+            content: markdown/account_key
+          - destination: container_name.txt
+            content: markdown/container_name
+          - destination: mlflow_key.txt
+            content: markdown/mlflow_key
+  changeRecord:
+    type: "auto"
+    group: "Data Science Markdown Optimization"
+    managerGroup: "Change Managers - US Sam's"
+    affectedGEOs: [ "US" ]
+    notifyChannels: [ "markdown_deployment" ]
+    businessUnits: [ "Home Office" ]
+    primaryCI: "Wingman"
+  stages:
+    - name: dev
+      target:
+        - cluster_id: 
+      refs: ['markdown_dev']
+    - name: stage
+      target:
+        - cluster_id: 
+      refs: ['main']
+    - name: prod
+      approvers:
+        groups:
+          - 
+      target:
+        - cluster_id: 
+      refs: ['main']
+
+
